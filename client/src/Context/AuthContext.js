@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 export const AuthContext = React.createContext();
 
@@ -27,13 +27,12 @@ const AuthContextProvider = props => {
 
     const controlAuth = async () => {
       try {
-        const { data } = await axios.get("/auth/private", config);
+        const { data } = await api.get("/auth/private");
         setActiveUser(data.user)
       }
       catch (error) {
-
+        console.log("Auth check failed:", error.message);
         localStorage.removeItem("authToken");
-
         setActiveUser({})
       }
     };

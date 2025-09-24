@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import Loader from '../GeneralScreens/Loader';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -27,7 +27,7 @@ const EditStory = () => {
         const getStoryInfo = async () => {
             setLoading(true)
             try {
-                const { data } = await axios.get(`/story/editStory/${slug}`, config)
+                const { data } = await api.get(`/story/editStory/${slug}`, config)
                 setStory(data.data)
                 setTitle(data.data.title)
                 setContent(data.data.content)
@@ -51,7 +51,7 @@ const EditStory = () => {
         formdata.append("previousImage", previousImage)
 
         try {
-            const { data } = await axios.put(`/story/${slug}/edit`, formdata, config)
+            const { data } = await api.put(`/story/${slug}/edit`, formdata, config)
 
             setSuccess('Edit Story successfully ')
 

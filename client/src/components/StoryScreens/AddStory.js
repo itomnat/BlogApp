@@ -1,6 +1,6 @@
 import React, { useRef, useContext } from 'react'
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../../utils/api'
 import { Link } from 'react-router-dom'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -36,7 +36,7 @@ const AddStory = () => {
         formdata.append("content", content)
 
         try {
-            const { data } = await axios.post("/story/addstory", formdata, config)
+            const { data } = await api.post("/story/addstory", formdata, config)
             setSuccess('Add story successfully ')
 
             clearInputs()

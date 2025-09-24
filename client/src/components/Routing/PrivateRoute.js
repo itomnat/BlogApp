@@ -1,7 +1,7 @@
 import { useEffect,useState,useContext } from 'react';
 import {Outlet, useNavigate} from 'react-router-dom'
 import Home from '../GeneralScreens/Home';
-import axios from 'axios';
+import api from '../../utils/api';
 import { AuthContext } from "../../Context/AuthContext";
 
 const PrivateRoute =( ) => {
@@ -21,7 +21,7 @@ const PrivateRoute =( ) => {
             },
         };
         try {
-            const { data } = await axios.get("/auth/private", config); 
+            const { data } = await api.get("/auth/private", config); 
 
             setAuth(true)
             setActiveUser(data.user)

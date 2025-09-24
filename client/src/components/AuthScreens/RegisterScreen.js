@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import "../../Css/Register.css"
 const RegisterScreen = () => {
@@ -23,7 +23,7 @@ const RegisterScreen = () => {
     }
 
     try {
-      const { data } = await axios.post(
+      const { data } = await api.post(
         "/auth/register",
         {
           username,

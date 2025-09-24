@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../../utils/api'
 import { useAuth } from '../../Context/AuthContext'
 import '../../Css/AdminDashboard.css'
 
@@ -28,8 +28,8 @@ const AdminDashboard = () => {
             }
 
             const [statsRes, usersRes] = await Promise.all([
-                axios.get('/admin/dashboard', config),
-                axios.get('/admin/users', config)
+                api.get('/admin/dashboard', config),
+                api.get('/admin/users', config)
             ])
 
             setStats(statsRes.data.data)
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
                     }
                 }
 
-                await axios.delete(`/admin/users/${userId}`, config)
+                await api.delete(`/admin/users/${userId}`, config)
                 setUsers(users.filter(u => u._id !== userId))
                 alert('User deleted successfully')
             } catch (error) {
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
                 }
             }
 
-            await axios.put(`/admin/users/${userId}/role`, { role: newRole }, config)
+            await api.put(`/admin/users/${userId}/role`, { role: newRole }, config)
             setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u))
             alert('User role updated successfully')
         } catch (error) {
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
                     }
                 }
 
-                await axios.delete(`/admin/stories/${slug}`, config)
+                await api.delete(`/admin/stories/${slug}`, config)
                 alert('Story deleted successfully')
                 fetchDashboardData() // Refresh data
             } catch (error) {
@@ -109,7 +109,7 @@ const AdminDashboard = () => {
                     }
                 }
 
-                await axios.delete(`/admin/comments/${commentId}`, config)
+                await api.delete(`/admin/comments/${commentId}`, config)
                 alert('Comment deleted successfully')
                 fetchDashboardData() // Refresh data
             } catch (error) {
