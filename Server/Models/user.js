@@ -64,15 +64,20 @@ UserSchema.pre("save" , async function (next) {
 
 UserSchema.methods.generateJwtFromUser  = function(){
     
-    const { JWT_SECRET_KEY,JWT_EXPIRE } = process.env;
+    const { JWT_SECRET_KEY, JWT_EXPIRE } = process.env;
 
-    payload = {
+    if (!JWT_SECRET_KEY) {
+        throw new Error('JWT_SECRET_KEY environment variable is not defined');
+    }
+
+    const payload = {
         id: this._id,
         username : this.username,
         email : this.email
     }
 
-    const token = jwt.sign(payload ,JWT_SECRET_KEY, {expiresIn :JWT_EXPIRE} )
+    const tokenOptions = JWT_EXPIRE ? { expiresIn: JWT_EXPIRE } : {};
+    const token = jwt.sign(payload, JWT_SECRET_KEY, tokenOptions);
 
     return token 
 }
@@ -87,7 +92,9 @@ UserSchema.methods.getResetPasswordTokenFromUser =function(){
 
     this.resetPasswordToken = resetPasswordToken
     
-    this.resetPasswordExpire =Date.now()+ parseInt(RESET_PASSWORD_EXPIRE)
+    // Default to 1 hour if RESET_PASSWORD_EXPIRE is not set
+    const expireTime = RESET_PASSWORD_EXPIRE ? parseInt(RESET_PASSWORD_EXPIRE) : 3600000; // 1 hour in milliseconds
+    this.resetPasswordExpire = Date.now() + expireTime;
 
     return resetPasswordToken
 }

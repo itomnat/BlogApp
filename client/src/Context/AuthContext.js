@@ -31,7 +31,7 @@ const AuthContextProvider = props => {
         setActiveUser(data.user)
       }
       catch (error) {
-        console.log("Auth check failed:", error.message);
+        console.error("Auth check failed:", error);
         localStorage.removeItem("authToken");
         setActiveUser({})
       }

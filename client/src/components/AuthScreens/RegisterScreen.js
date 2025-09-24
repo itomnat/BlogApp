@@ -39,8 +39,12 @@ const RegisterScreen = () => {
       }, 1800)
 
     } catch (error) {
-
-      setError(error.response.data.error);
+      console.error("Registration error:", error);
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          "Registration failed. Please try again.";
+      setError(errorMessage);
 
       setTimeout(() => {
         setError("");

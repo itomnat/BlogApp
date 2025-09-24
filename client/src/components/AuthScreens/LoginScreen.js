@@ -26,7 +26,12 @@ const LoginScreen = () => {
       }, 1800)
 
     } catch (error) {
-      setError(error.response.data.error);
+      console.error("Login error:", error);
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          "Login failed. Please try again.";
+      setError(errorMessage);
       setTimeout(() => {
         setError("");
       }, 4500);

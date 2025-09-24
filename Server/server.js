@@ -9,6 +9,16 @@ const customErrorHandler = require("./Middlewares/Errors/customErrorHandler")
 
 dotenv.config()
 
+// Check for required environment variables
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET_KEY'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+    console.error(`Missing required environment variables: ${missingEnvVars.join(', ')}`);
+    console.error('Please set these environment variables in your Render deployment settings');
+    process.exit(1);
+}
+
 connectDatabase()
 
 const app = express() ;

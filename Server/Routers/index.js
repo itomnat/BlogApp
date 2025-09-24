@@ -16,11 +16,23 @@ router.use("/admin",adminRoute)
 
 // Health check endpoint
 router.get("/health", (req, res) => {
+    const envCheck = {
+        MONGODB_URI: !!process.env.MONGODB_URI,
+        JWT_SECRET_KEY: !!process.env.JWT_SECRET_KEY,
+        EMAIL_USERNAME: !!process.env.EMAIL_USERNAME,
+        URI: !!process.env.URI
+    };
+    
     res.status(200).json({
         success: true,
         message: "Server is running",
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        environment: {
+            NODE_ENV: process.env.NODE_ENV,
+            PORT: process.env.PORT
+        },
+        envVars: envCheck
     })
 })
 
