@@ -1,28 +1,33 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import api from "../../utils/api";
 import "../../Css/Login.css"
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate()
-
+  const { login } = useContext(AuthContext);
 
   const loginHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
       const { data } = await api.post(
         "/auth/login",
         { email, password }
       );
-      localStorage.setItem("authToken", data.token);
+      
+      // Use the login method from AuthContext
+      login(data.user, data.token);
 
       setTimeout(() => {
-
         navigate("/")
-
       }, 1800)
 
     } catch (error) {
@@ -36,6 +41,8 @@ const LoginScreen = () => {
         setError("");
       }, 4500);
 
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -99,8 +106,8 @@ const LoginScreen = () => {
             </div>
             <Link to="/forgotpassword" className="login-screen__forgotpassword"> Forgot Password ?
             </Link>
-            <button type="submit" >
-              Login
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
             </button>
 
           </form>

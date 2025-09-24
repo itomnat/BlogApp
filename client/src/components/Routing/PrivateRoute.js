@@ -1,51 +1,26 @@
-import { useEffect,useState,useContext } from 'react';
+import { useContext } from 'react';
 import {Outlet, useNavigate} from 'react-router-dom'
 import Home from '../GeneralScreens/Home';
-import api from '../../utils/api';
 import { AuthContext } from "../../Context/AuthContext";
+import Loader from '../GeneralScreens/Loader';
 
-const PrivateRoute =( ) => {
-    const bool =localStorage.getItem("authToken") ? true :false
-    const [auth ,setAuth] =useState(bool)
-    const [error ,setError] =useState("")
+const PrivateRoute = () => {
     const navigate = useNavigate()
-    const {setActiveUser,setConfig } = useContext(AuthContext)
+    const { isAuthenticated, isLoading } = useContext(AuthContext)
 
-    useEffect(() => {
+    // Show loading spinner while checking authentication
+    if (isLoading) {
+        return <Loader />
+    }
 
-       const controlAuth = async () => {
-        const config = {
-            headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-        };
-        try {
-            const { data } = await api.get("/auth/private", config); 
+    // If not authenticated, redirect to home with error message
+    if (!isAuthenticated) {
+        navigate("/", { replace: true })
+        return <Home error="You are not authorized please login" />
+    }
 
-            setAuth(true)
-            setActiveUser(data.user)
-            setConfig(config)
-
-        } 
-        catch (error) {
-
-            localStorage.removeItem("authToken");
-
-            setAuth(false)
-            setActiveUser({})
-
-            navigate("/")
-
-            setError("You are not authorized please login"); 
-        }
-        };
-
-        controlAuth()
-    }, [bool,navigate])
-
-
-    return (auth ? <Outlet />  : <Home error={error} />)
+    // If authenticated, render the protected route
+    return <Outlet />
 }
 
 export default PrivateRoute;

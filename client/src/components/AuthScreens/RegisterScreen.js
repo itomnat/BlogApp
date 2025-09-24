@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import "../../Css/Register.css"
+import { AuthContext } from "../../Context/AuthContext";
+
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const registerHandler = async (e) => {
     e.preventDefault();
@@ -22,6 +26,9 @@ const RegisterScreen = () => {
       return setError("Passwords do not match");
     }
 
+    setIsLoading(true);
+    setError("");
+
     try {
       const { data } = await api.post(
         "/auth/register",
@@ -32,7 +39,8 @@ const RegisterScreen = () => {
         }
       );
 
-      localStorage.setItem("authToken", data.token);
+      // Use the login method from AuthContext
+      login(data.user, data.token);
 
       setTimeout(() => {
         navigate('/');
@@ -49,6 +57,8 @@ const RegisterScreen = () => {
       setTimeout(() => {
         setError("");
       }, 6000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -142,8 +152,8 @@ const RegisterScreen = () => {
               <label htmlFor="confirmpassword">Confirm Password</label>
             </div>
 
-            <button type="submit" >
-              Register
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Registering..." : "Register"}
             </button>
 
           </form>
