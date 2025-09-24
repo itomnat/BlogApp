@@ -32,10 +32,22 @@ const LoginScreen = () => {
 
     } catch (error) {
       console.error("Login error:", error);
-      const errorMessage = error.response?.data?.error || 
-                          error.response?.data?.message || 
-                          error.message || 
-                          "Login failed. Please try again.";
+      console.error("Error response:", error.response);
+      
+      let errorMessage = "Login failed. Please try again.";
+      
+      if (error.response?.status === 404) {
+        errorMessage = "Server not available. Please try again later.";
+      } else if (error.response?.status === 401) {
+        errorMessage = "Invalid email or password.";
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       setError(errorMessage);
       setTimeout(() => {
         setError("");

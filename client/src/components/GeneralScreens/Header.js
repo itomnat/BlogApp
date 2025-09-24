@@ -10,9 +10,10 @@ import SkeletonElement from '../Skeletons/SkeletonElement';
 import { AuthContext, useAuth } from '../../Context/AuthContext';
 
 const Header = () => {
-    const { activeUser, logout, isAuthenticated } = useAuth()
+    const { activeUser, logout, isAuthenticated, isLoading } = useAuth()
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -40,7 +41,11 @@ const Header = () => {
                 <SearchForm />
                 <div className='header_options'>
 
-                    {isAuthenticated ?
+                    {isLoading ? (
+                        <div className="auth-loading">
+                            <SkeletonElement type="text" />
+                        </div>
+                    ) : isAuthenticated && activeUser && Object.keys(activeUser).length > 0 ?
                         <div className="auth_options">
 
 
@@ -53,7 +58,7 @@ const Header = () => {
                             <Link to="/readList" className='readList-link'>
                                 <BsBookmarks />
                                 <span id="readListLength">
-                                    {activeUser.readListLength || 0}
+                                    {activeUser?.readListLength || 0}
                                 </span>
                             </Link>
                             <div className='header-profile-wrapper '>
