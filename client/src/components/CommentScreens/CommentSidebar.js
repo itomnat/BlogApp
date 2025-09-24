@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import StoryComments from './StoryComments';
-import axios from 'axios';
+import api from '../../utils/api';
 import AddComment from './AddComment';
 
 const CommentSidebar = ({ slug, sidebarShowStatus, setSidebarShowStatus, activeUser }) => {
@@ -17,12 +17,14 @@ const CommentSidebar = ({ slug, sidebarShowStatus, setSidebarShowStatus, activeU
 
   const getStoryComments = async () => {
     try {
-      const { data } = await axios.get(`/comment/${slug}/getAllComment`)
-      setCommentList(data.data)
-      setCount(data.count)
+      const { data } = await api.get(`/comment/${slug}/getAllComment`)
+      setCommentList(data.data || [])
+      setCount(data.count || 0)
     }
     catch (error) {
-      console.log(error.response.data.error);
+      console.error("Failed to fetch comments:", error);
+      setCommentList([])
+      setCount(0)
     }
   }
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import axios from 'axios';
+import api from '../../utils/api';
 import StarRating from './StarRating';
 import { BsShieldCheck, BsCheckAll } from 'react-icons/bs'
 import { IoAdd } from 'react-icons/io5'
@@ -21,12 +21,7 @@ const AddComment = ({ setSidebarShowStatus, slug, getStoryComments, activeUser, 
 
         e.preventDefault();
         try {
-            await axios.post(`/comment/${slug}/addComment`, { content, star }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                },
-            })
+            await api.post(`/comment/${slug}/addComment`, { content, star })
 
             setSuccess('Add Comment successfully ')
             setTimeout(() => {

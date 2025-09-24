@@ -1,5 +1,5 @@
 import api from '../../utils/api';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import "../../Css/DetailStory.css"
 import Loader from '../GeneralScreens/Loader';
@@ -9,11 +9,11 @@ import { FiEdit, FiArrowLeft } from 'react-icons/fi'
 import { FaRegComment } from 'react-icons/fa'
 import { BsBookmarkPlus, BsThreeDots, BsBookmarkFill } from 'react-icons/bs'
 import CommentSidebar from '../CommentScreens/CommentSidebar';
+import { AuthContext } from '../../Context/AuthContext';
 
 const DetailStory = () => {
   const [likeStatus, setLikeStatus] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
-  const [activeUser, setActiveUser] = useState({})
   const [story, setStory] = useState({})
   const [storyLikeUser, setStoryLikeUser] = useState([])
   const [sidebarShowStatus, setSidebarShowStatus] = useState(false)
@@ -21,39 +21,24 @@ const DetailStory = () => {
   const slug = useParams().slug
   const [storyReadListStatus, setStoryReadListStatus] = useState(false)
   const navigate = useNavigate()
+  const { activeUser } = useContext(AuthContext)
 
   useEffect(() => {
 
     const getDetailStory = async () => {
       setLoading(true)
-      var activeUser = {}
+      
       try {
-        const { data } = await api.get("/auth/private", {
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-        activeUser = data.user
-
-        setActiveUser(activeUser)
-
-      }
-      catch (error) {
-        setActiveUser({})
-      }
-
-      try {
-        const { data } = await api.post(`/story/${slug}`, { activeUser })
+        const { data } = await api.post(`/story/${slug}`, { activeUser: activeUser || {} })
         setStory(data.data)
-        setLikeStatus(data.likeStatus)
-        setLikeCount(data.data.likeCount)
-        setStoryLikeUser(data.data.likes)
+        setLikeStatus(data.likeStatus || false)
+        setLikeCount(data.data.likeCount || 0)
+        setStoryLikeUser(data.data.likes || [])
         setLoading(false)
 
         const story_id = data.data._id;
 
-        if (activeUser.readList) {
+        if (activeUser && activeUser.readList) {
 
           if (!activeUser.readList.includes(story_id)) {
             setStoryReadListStatus(false)
@@ -74,7 +59,7 @@ const DetailStory = () => {
     }
     getDetailStory();
 
-  }, [slug, setLoading])
+  }, [slug, activeUser])
 
 
 

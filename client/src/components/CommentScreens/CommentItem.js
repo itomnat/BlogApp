@@ -5,7 +5,7 @@ import {
     MdWavingHand
 } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
-import axios from 'axios';
+import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 const CommentItem = ({ comment, activeUser }) => {
@@ -19,12 +19,7 @@ const CommentItem = ({ comment, activeUser }) => {
 
             const comment_id = comment._id
             try {
-                const { data } = await axios.post(`/comment/${comment_id}/getCommentLikeStatus`, { activeUser }, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                    },
-                })
+                const { data } = await api.post(`/comment/${comment_id}/getCommentLikeStatus`, { activeUser })
                 setLikeStatus(data.likeStatus)
             }
             catch (error) {
@@ -50,12 +45,7 @@ const CommentItem = ({ comment, activeUser }) => {
         const comment_id = comment._id
 
         try {
-            const { data } = await axios.post(`/comment/${comment_id}/like`, { activeUser }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                },
-            })
+            const { data } = await api.post(`/comment/${comment_id}/like`, { activeUser })
 
             setLikeCount(data.data.likeCount)
             setLikeStatus(data.likeStatus)

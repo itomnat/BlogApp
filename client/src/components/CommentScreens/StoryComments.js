@@ -6,7 +6,7 @@ const StoryComments = ({ commentlist, count, activeUser }) => {
 
     return (
         <>
-            {count !== 0 ?
+            {count !== 0 && commentlist && commentlist.length > 0 ?
                 <div className='storyComments'>
                     <h5>MOST RELEVANT</h5>
                     <div className="comment-Wrapper">
