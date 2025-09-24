@@ -108,7 +108,7 @@ const EditStory = () => {
                                 <div class="absolute">
                                     Currently Image
                                 </div>
-                                <img src={`http://localhost:5000/storyImages/${previousImage}`} alt="storyImage" />
+                                <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/storyImages/${previousImage}`} alt="storyImage" />
                             </div>
                             <div class="StoryImageField">
                                 <AiOutlineUpload />

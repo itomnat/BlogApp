@@ -18,7 +18,7 @@ router.get("/editStory/:slug",[getAccessToRoute,checkStoryExist,checkUserAndStor
 
 router.put("/:slug/edit",[getAccessToRoute,checkStoryExist,checkUserAndStoryExist, imageupload.single("image")] ,editStory)
 
-router.delete("/:slug/delete",[getAccessToRoute,checkStoryExist,checkUserAndStoryExist] ,deleteStory)
+router.delete("/:slug/delete",[getAccessToRoute,checkStoryExist] ,deleteStory)
 
 router.get("/getAllStories",getAllStories)
 

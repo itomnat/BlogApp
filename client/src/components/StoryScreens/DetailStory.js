@@ -95,6 +95,13 @@ const DetailStory = () => {
       }
       catch (error) {
         console.log(error)
+        if (error.response?.status === 403) {
+          alert("You are not authorized to delete this story")
+        } else if (error.response?.status === 404) {
+          alert("Story not found")
+        } else {
+          alert("Error deleting story. Please try again.")
+        }
       }
 
     }
@@ -144,7 +151,7 @@ const DetailStory = () => {
                   <ul>
                     {story.author &&
                       <li className='story-author-info'>
-                        <img src={`/userPhotos/${story.author.photo}`} alt={story.author.username} />
+                        <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${story.author.photo}`} alt={story.author.username} />
                         <span className='story-author-username'>{story.author.username}  </span>
                       </li>
                     }
@@ -204,7 +211,7 @@ const DetailStory = () => {
               <div className='story-content' >
 
                 <div className="story-banner-img">
-                  <img src={`/storyImages/${story.image}`} alt={story.title} />
+                  <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/storyImages/${story.image}`} alt={story.title} />
 
                 </div>
 

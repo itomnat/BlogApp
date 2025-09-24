@@ -63,7 +63,7 @@ const CommentItem = ({ comment, activeUser }) => {
             <div className="comment-top-block">
 
                 <section>
-                    <img src={`/userPhotos/${comment.author.photo}`} alt={comment.author.username} width="35" />
+                    <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${comment.author.photo}`} alt={comment.author.username} width="35" />
 
                     <div>
                         <span className='comment-author-username' >{comment.author.username}</span>

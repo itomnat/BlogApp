@@ -24,8 +24,9 @@ const Home = () => {
 
       setLoading(true)
       try {
-
+        console.log("Fetching stories with search:", searchKey, "page:", page)
         const { data } = await api.get(`/story/getAllStories?search=${searchKey || ""}&page=${page}`)
+        console.log("Stories response:", data)
 
         if (searchKey) {
           navigate({
@@ -47,11 +48,15 @@ const Home = () => {
         setLoading(false)
       }
       catch (error) {
-        setLoading(true)
+        console.error("Error fetching stories:", error)
+        console.error("Error response:", error.response)
+        setStories([])
+        setPages(1)
+        setLoading(false)
       }
     }
     getStories()
-  }, [setLoading, search, page, navigate])
+  }, [searchKey, page])
 
 
   useEffect(() => {

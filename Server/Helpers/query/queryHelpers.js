@@ -23,10 +23,15 @@ const paginateHelper = async (model ,query ,req)=> {
     const pageSize = parseInt( req.query.limit ) || 6 ; 
     const skip  = (page-1 ) * pageSize ; 
    
-    const regex = new RegExp(req.query.search, "i")    
+    // Only apply search filter if search term exists
+    let searchFilter = {}
+    if (req.query.search) {
+        const regex = new RegExp(req.query.search, "i")
+        searchFilter = {"title" : regex}
+    }
 
-    const total = await model.countDocuments({"title" : regex})
-  
+    const total = await model.countDocuments(searchFilter)
+
     const pages = Math.ceil(total / pageSize )  ;
 
     query = query.skip(skip).limit(pageSize) ; 

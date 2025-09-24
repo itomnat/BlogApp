@@ -247,6 +247,11 @@ blog-app/
 - Manage user roles
 - View system statistics
 
+admin credentials for testing:
+
+email: badong@mail.com
+password: 123456789
+
 ## 🎨 UI/UX Features
 
 - **Responsive Design**: Works on desktop, tablet, and mobile

@@ -41,6 +41,8 @@ const addStory = asyncErrorWrapper(async  (req,res,next)=> {
 
 const getAllStories = asyncErrorWrapper( async (req,res,next) =>{
 
+    console.log("getAllStories called with query:", req.query)
+
     let query = Story.find();
 
     query =searchHelper("title",query,req)
@@ -50,8 +52,11 @@ const getAllStories = asyncErrorWrapper( async (req,res,next) =>{
     query = paginationResult.query  ;
 
     query = query.sort("-likeCount -commentCount -createdAt")
+    query = query.populate("author", "username photo")
 
     const stories = await query
+    
+    console.log("Found stories:", stories.length)
     
     return res.status(200).json(
         {

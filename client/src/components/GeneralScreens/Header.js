@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import SearchForm from './SearchForm';
 import '../../Css/Header.css'
@@ -6,13 +6,20 @@ import { RiPencilFill } from 'react-icons/ri'
 import { FaUserEdit } from 'react-icons/fa'
 import { BiLogOut } from 'react-icons/bi'
 import { BsBookmarks } from 'react-icons/bs'
-import { FaCog } from 'react-icons/fa'
 import SkeletonElement from '../Skeletons/SkeletonElement';
-import { AuthContext } from '../../Context/AuthContext';
+import { AuthContext, useAuth } from '../../Context/AuthContext';
 
 const Header = () => {
-    const { activeUser, isAuthenticated, isLoading, logout } = useContext(AuthContext)
+    const { activeUser, logout, isAuthenticated } = useAuth()
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 1600)
+    }, [])
+
 
     const handleLogout = () => {
         logout();
@@ -39,24 +46,21 @@ const Header = () => {
 
                             <Link className='addStory-link' to="/addstory"><RiPencilFill /> Add Story </Link>
 
-                            {activeUser && activeUser.role === 'admin' && (
-                                <Link className='admin-link' to="/admin"><FaCog /> Admin </Link>
-                            )}
 
                             <Link to="/readList" className='readList-link'>
                                 <BsBookmarks />
                                 <span id="readListLength">
-                                    {activeUser.readListLength || 0}
+                                    {activeUser.readListLength}
                                 </span>
                             </Link>
                             <div className='header-profile-wrapper '>
 
 
-                                {isLoading ? <SkeletonElement type="minsize-avatar" />
+                                {loading ? <SkeletonElement type="minsize-avatar" />
 
                                     :
 
-                                    <img src={`/userPhotos/${activeUser.photo || 'user.png'}`} alt={activeUser.username} />
+                                    <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
 
                                 }
 

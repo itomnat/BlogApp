@@ -57,7 +57,7 @@ const ReadListPage = () => {
 
                     <div className="readList-top-block">
 
-                        <img src={`/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
+                        <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
 
 
                         <div className='activeUser-info-wrapper'>

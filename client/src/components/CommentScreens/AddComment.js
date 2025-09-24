@@ -88,7 +88,7 @@ const AddComment = ({ setSidebarShowStatus, slug, getStoryComments, activeUser, 
 
 
                     <div className={showStatus ? 'activeuser-info ' : 'activeuser-info hidden '}>
-                        <img src={`/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
+                        <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
                         <span className='username'>{activeUser.username}  </span>
                     </div>
 
