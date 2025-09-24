@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // Create axios instance with base URL from environment variable
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
-  timeout: 10000,
+  baseURL: process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com',
+  timeout: 15000, // Increased timeout for Render's cold start
   headers: {
     'Content-Type': 'application/json',
   },
@@ -16,6 +16,10 @@ api.interceptors.request.use(
     if (token) {
       config.headers.authorization = `Bearer ${token}`;
     }
+    
+    // Add retry logic for Render cold starts
+    config.metadata = { startTime: new Date() };
+    
     return config;
   },
   (error) => {
@@ -34,6 +38,12 @@ api.interceptors.response.use(
       localStorage.removeItem('authToken');
       // Don't redirect here - let components handle it
       console.warn('Authentication token expired or invalid');
+    } else if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      // Handle timeout errors (common with Render cold starts)
+      console.error('Request timeout - server may be starting up. Please try again.');
+    } else if (error.response?.status >= 500) {
+      // Handle server errors
+      console.error('Server error - please try again later');
     }
     return Promise.reject(error);
   }
