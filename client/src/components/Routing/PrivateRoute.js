@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import {Outlet, useNavigate} from 'react-router-dom'
 import Home from '../GeneralScreens/Home';
 import { AuthContext } from "../../Context/AuthContext";
@@ -8,14 +8,20 @@ const PrivateRoute = () => {
     const navigate = useNavigate()
     const { isAuthenticated, isLoading } = useContext(AuthContext)
 
+    // Handle navigation after authentication check is complete
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated) {
+            navigate("/", { replace: true });
+        }
+    }, [isLoading, isAuthenticated, navigate]);
+
     // Show loading spinner while checking authentication
     if (isLoading) {
         return <Loader />
     }
 
-    // If not authenticated, redirect to home with error message
+    // If not authenticated, show home with error message
     if (!isAuthenticated) {
-        navigate("/", { replace: true })
         return <Home error="You are not authorized please login" />
     }
 
