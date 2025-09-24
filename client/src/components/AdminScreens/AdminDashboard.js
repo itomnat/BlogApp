@@ -36,8 +36,8 @@ const AdminDashboard = () => {
 
     const handleDeleteUser = async (userId) => {
         if (window.confirm('Are you sure you want to delete this user and all their data?')) {
-        try {
-            await api.delete(`/admin/users/${userId}`)
+            try {
+                await api.delete(`/admin/users/${userId}`)
                 setUsers(users.filter(u => u._id !== userId))
                 alert('User deleted successfully')
             } catch (error) {
@@ -60,8 +60,8 @@ const AdminDashboard = () => {
 
     const handleDeleteStory = async (slug) => {
         if (window.confirm('Are you sure you want to delete this story?')) {
-        try {
-            await api.delete(`/admin/stories/${slug}`)
+            try {
+                await api.delete(`/admin/stories/${slug}`)
                 alert('Story deleted successfully')
                 fetchDashboardData() // Refresh data
             } catch (error) {
@@ -73,8 +73,8 @@ const AdminDashboard = () => {
 
     const handleDeleteComment = async (commentId) => {
         if (window.confirm('Are you sure you want to delete this comment?')) {
-        try {
-            await api.delete(`/admin/comments/${commentId}`)
+            try {
+                await api.delete(`/admin/comments/${commentId}`)
                 alert('Comment deleted successfully')
                 fetchDashboardData() // Refresh data
             } catch (error) {

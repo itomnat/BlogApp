@@ -10,6 +10,7 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -39,12 +40,12 @@ const RegisterScreen = () => {
         }
       );
 
-      // Use the login method from AuthContext
-      login(data.user, data.token);
-
+      // Show success message and redirect to login
+      setSuccess("Registration successful! Please login with your credentials.");
+      
       setTimeout(() => {
-        navigate('/');
-      }, 1800)
+        navigate('/login');
+      }, 2000)
 
     } catch (error) {
       console.error("Registration error:", error);
@@ -95,6 +96,7 @@ const RegisterScreen = () => {
 
           <form onSubmit={registerHandler} >
             {error && <div className="error_message">{error}</div>}
+            {success && <div className="success_message">{success}</div>}
             <div className="input-wrapper">
               <input
                 type="text"

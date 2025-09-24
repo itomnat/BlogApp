@@ -188,6 +188,23 @@ header .logo h5 {
     margin-top: -5px;
 }
 
+.admin-link {
+    color: #dc3545;
+    font-size: 1.4rem;
+    margin-right: 1.8rem;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: rgba(220, 53, 69, 0.1);
+    transition: all 0.3s ease;
+}
+
+.admin-link:hover {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.2);
+}
+
 .readList-link {
     color: black;
     font-size: 2rem;

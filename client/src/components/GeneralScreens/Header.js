@@ -46,11 +46,14 @@ const Header = () => {
 
                             <Link className='addStory-link' to="/addstory"><RiPencilFill /> Add Story </Link>
 
+                            {activeUser?.role === 'admin' && (
+                                <Link className='admin-link' to="/admin">Admin Dashboard</Link>
+                            )}
 
                             <Link to="/readList" className='readList-link'>
                                 <BsBookmarks />
                                 <span id="readListLength">
-                                    {activeUser.readListLength}
+                                    {activeUser.readListLength || 0}
                                 </span>
                             </Link>
                             <div className='header-profile-wrapper '>
@@ -60,7 +63,7 @@ const Header = () => {
 
                                     :
 
-                                    <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${activeUser.photo}`} alt={activeUser.username} />
+                                    <img src={`${process.env.REACT_APP_API_URL || 'https://blogapp-7ooo.onrender.com'}/userPhotos/${activeUser?.photo}`} alt={activeUser?.username} />
 
                                 }
 
