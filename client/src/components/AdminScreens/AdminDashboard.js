@@ -20,16 +20,9 @@ const AdminDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const token = localStorage.getItem('token')
-            const config = {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }
-
             const [statsRes, usersRes] = await Promise.all([
-                api.get('/admin/dashboard', config),
-                api.get('/admin/users', config)
+                api.get('/admin/dashboard'),
+                api.get('/admin/users')
             ])
 
             setStats(statsRes.data.data)
@@ -43,15 +36,8 @@ const AdminDashboard = () => {
 
     const handleDeleteUser = async (userId) => {
         if (window.confirm('Are you sure you want to delete this user and all their data?')) {
-            try {
-                const token = localStorage.getItem('token')
-                const config = {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-
-                await api.delete(`/admin/users/${userId}`, config)
+        try {
+            await api.delete(`/admin/users/${userId}`)
                 setUsers(users.filter(u => u._id !== userId))
                 alert('User deleted successfully')
             } catch (error) {
@@ -63,14 +49,7 @@ const AdminDashboard = () => {
 
     const handleUpdateUserRole = async (userId, newRole) => {
         try {
-            const token = localStorage.getItem('token')
-            const config = {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }
-
-            await api.put(`/admin/users/${userId}/role`, { role: newRole }, config)
+            await api.put(`/admin/users/${userId}/role`, { role: newRole })
             setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u))
             alert('User role updated successfully')
         } catch (error) {
@@ -81,15 +60,8 @@ const AdminDashboard = () => {
 
     const handleDeleteStory = async (slug) => {
         if (window.confirm('Are you sure you want to delete this story?')) {
-            try {
-                const token = localStorage.getItem('token')
-                const config = {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-
-                await api.delete(`/admin/stories/${slug}`, config)
+        try {
+            await api.delete(`/admin/stories/${slug}`)
                 alert('Story deleted successfully')
                 fetchDashboardData() // Refresh data
             } catch (error) {
@@ -101,15 +73,8 @@ const AdminDashboard = () => {
 
     const handleDeleteComment = async (commentId) => {
         if (window.confirm('Are you sure you want to delete this comment?')) {
-            try {
-                const token = localStorage.getItem('token')
-                const config = {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-
-                await api.delete(`/admin/comments/${commentId}`, config)
+        try {
+            await api.delete(`/admin/comments/${commentId}`)
                 alert('Comment deleted successfully')
                 fetchDashboardData() // Refresh data
             } catch (error) {

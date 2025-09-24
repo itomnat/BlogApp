@@ -289,7 +289,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Gilbert Hutapea**
+**Nataniel Cristoher Itom**
 
 ## 🙏 Acknowledgments
 

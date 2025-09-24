@@ -9,7 +9,7 @@ import { AiOutlineUpload } from 'react-icons/ai'
 import '../../Css/EditStory.css'
 
 const EditStory = () => {
-    const { config } = useContext(AuthContext)
+    const { activeUser } = useContext(AuthContext)
     const slug = useParams().slug
     const imageEl = useRef(null)
     const [loading, setLoading] = useState(true)
@@ -27,7 +27,7 @@ const EditStory = () => {
         const getStoryInfo = async () => {
             setLoading(true)
             try {
-                const { data } = await api.get(`/story/editStory/${slug}`, config)
+                const { data } = await api.get(`/story/editStory/${slug}`)
                 setStory(data.data)
                 setTitle(data.data.title)
                 setContent(data.data.content)
@@ -51,7 +51,7 @@ const EditStory = () => {
         formdata.append("previousImage", previousImage)
 
         try {
-            const { data } = await api.put(`/story/${slug}/edit`, formdata, config)
+            const { data } = await api.put(`/story/${slug}/edit`, formdata)
 
             setSuccess('Edit Story successfully ')
 

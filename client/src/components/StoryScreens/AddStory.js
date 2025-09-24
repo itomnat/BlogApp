@@ -11,7 +11,7 @@ import '../../Css/AddStory.css'
 
 const AddStory = () => {
 
-    const { config } = useContext(AuthContext)
+    const { activeUser } = useContext(AuthContext)
     const imageEl = useRef(null)
     const editorEl = useRef(null)
     const [image, setImage] = useState('')
@@ -36,7 +36,7 @@ const AddStory = () => {
         formdata.append("content", content)
 
         try {
-            const { data } = await api.post("/story/addstory", formdata, config)
+            const { data } = await api.post("/story/addstory", formdata)
             setSuccess('Add story successfully ')
 
             clearInputs()

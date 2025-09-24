@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 import { FaUserAlt } from 'react-icons/fa'
 import { AiOutlineUpload } from 'react-icons/ai'
 import Loader from "../GeneralScreens/Loader";
@@ -27,7 +27,7 @@ const EditProfile = () => {
         formdata.append("photo", photo)
 
         try {
-            const { data } = await axios.post("/user/editProfile", formdata, config)
+            const { data } = await api.post("/user/editProfile", formdata)
 
             setSuccess('Edit Profile successfully ')
             setTimeout(() => {

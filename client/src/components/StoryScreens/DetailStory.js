@@ -69,12 +69,7 @@ const DetailStory = () => {
     }, 1500)
 
     try {
-      const { data } = await api.post(`/story/${slug}/like`, { activeUser }, {
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      })
+      const { data } = await api.post(`/story/${slug}/like`, { activeUser })
 
       setLikeCount(data.data.likeCount)
       setStoryLikeUser(data.data.likes)
@@ -94,12 +89,7 @@ const DetailStory = () => {
 
       try {
 
-        await api.delete(`/story/${slug}/delete`, {
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        })
+        await api.delete(`/story/${slug}/delete`)
         navigate("/")
 
       }
@@ -124,12 +114,7 @@ const DetailStory = () => {
 
     try {
 
-      const { data } = await api.post(`/user/${slug}/addStoryToReadList`, { activeUser }, {
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      })
+      const { data } = await api.post(`/user/${slug}/addStoryToReadList`, { activeUser })
 
       setStoryReadListStatus(data.status)
 

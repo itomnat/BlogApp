@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { Link } from "react-router-dom";
 import "../../Css/ForgotPassword.css"
 import { BsArrowBarLeft } from 'react-icons/bs'
@@ -12,7 +12,7 @@ const ForgotPasswordScreen = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(
+      const { data } = await api.post(
         "/auth/forgotpassword",
         { email }
       );

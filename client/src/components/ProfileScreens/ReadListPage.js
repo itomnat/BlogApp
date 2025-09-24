@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import axios from 'axios'
+import api from '../../utils/api'
 import Loader from "../GeneralScreens/Loader";
 import { useNavigate, Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -21,16 +21,18 @@ const ReadListPage = () => {
             setLoading(true)
 
             try {
-                const { data } = await (await axios.get(`/user/readList`, config)).data
-                setReadList(data)
+                const { data } = await api.get(`/user/readList`)
+                setReadList(data.data || [])
                 setLoading(false)
             }
             catch (error) {
-                navigate("/")
+                console.error("Failed to fetch read list:", error);
+                setReadList([])
+                setLoading(false)
+                // Don't navigate away, just show empty list
             }
         }
         getUserReadingList()
-
 
     }, [])
 
@@ -87,7 +89,7 @@ const ReadListPage = () => {
 
                     <div className="readList-story-wrapper">
 
-                        {readList.length !== 0 ?
+                        {readList && readList.length !== 0 ?
                             <>
                                 {readList.map(story => {
                                     return (
